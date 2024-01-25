@@ -1,0 +1,3 @@
+C:/Users/Alex/Documents/ProblemSolving/Elevator/cmake-build-debug/CMakeFiles/Elevator.dir
+C:/Users/Alex/Documents/ProblemSolving/Elevator/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Alex/Documents/ProblemSolving/Elevator/cmake-build-debug/CMakeFiles/rebuild_cache.dir
