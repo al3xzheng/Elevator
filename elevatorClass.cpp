@@ -28,35 +28,26 @@ public:
     void insert(DataType value, int position) {
         Node *newNode = new Node(value);
         if(position == 0) {
-            if(head == nullptr) {
-                head = newNode;
-                delete newNode;
-                newNode = nullptr;
-                return;
-            }
-            else {
-                newNode->next = head;
-                head = newNode;
-                return;
-            }
+            head = newNode; //fix this when there are things after.
+            return;
         }
         else {
             Node *previous = head;
-            Node* forward = head->next;
-            while(!position--) {
-                if (forward == nullptr)
+            Node *current = head->next;
+            while(position > 1) { //!position-- to reverse a linked list
+                previous = current;
+                current = current->next;
+                if (current == nullptr)
                     break;
-                previous = forward;
-                forward = forward->next;
                 position--;
             }
-            previous = newNode;
-            newNode->next = forward;
+            previous->next = newNode;
+            newNode->next = current;
             return;
         }
     }
     void replace(int position, DataType value) {
-        Node *newNode = new Node(value);
+        Node *newNode;
         newNode = head;
         while(!position--) {
             newNode = newNode->next;
@@ -69,7 +60,7 @@ public:
     }
     //void remove(int position);
     void print() {
-        Node *newNode = new Node();
+        Node *newNode;
         newNode = head;
         while(newNode != nullptr) {
             std::cout<<newNode->peoplePerFloor<<std::endl;
@@ -102,7 +93,6 @@ class Elevator {
 public:
     explicit Elevator(int constructFloors){
         numberFloors = constructFloors;
-        std::cout<<"Created an elevator in a building with 10 floors."<<std::endl;
     }
 
     void enter (int people) {
@@ -119,7 +109,7 @@ public:
             throw std::invalid_argument("floor DNE");
         }
         requestedFloor = floorRequest;
-        std::cout<<"Elevator for your trip to floor: "<<floorRequest<<" is coming shortly";
+        //std::cout<<"Elevator for your trip to floor: "<<floorRequest<<" is coming shortly";
     }
 
 
@@ -127,22 +117,25 @@ public:
 
 int main () {
 
-    LinkedList peoplePerFloor;
+    int floors;
+    std::cout<<"How many floors does your building have?\n";
+    std::cin>>floors;
 
-    std::cout<<"hello";
+    Elevator elevator(floors);
 
-    peoplePerFloor.insert(0, 0);
+    LinkedList people;
 
-    peoplePerFloor.print();
-
-
-    Elevator elevator(10);
-
-    try {
-        elevator.request(1, 2);
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
+    for(int i =0; i < floors; i++) {
+        people.insert(i, i);
     }
+
+    people.print();
+
+//    try {
+//        elevator.request(1, 2);
+//    } catch (const std::exception& e) {
+//        std::cerr << e.what() << std::endl;
+//    }
 
 
 
