@@ -13,28 +13,31 @@ float averageElevatorPeople = 1.9;
 
 typedef float DataType;
 
+//NOW CREATE A LIST with the number of times each floor was pressed.
+
 struct Node {
-    DataType peoplePerFloor;
+    DataType people;
     Node* next;
 
-    Node(): peoplePerFloor(0), next(nullptr) {};
-    explicit Node(float x): peoplePerFloor(x*averageElevatorPeople), next(nullptr) {};
+    Node(): people(0), next(nullptr) {};
+    explicit Node(float x): people(x*averageElevatorPeople), next(nullptr) {};
 };
 
 class LinkedList {
 private:
     Node *head = nullptr;
 public:
-    void insert(DataType value, int position) {
+    void insert(DataType value, int position) { //INSERT NOT REPLACE!
         Node *newNode = new Node(value);
         if(position == 0) {
+            newNode->next = head;
             head = newNode; //fix this when there are things after.
             return;
         }
         else {
             Node *previous = head;
             Node *current = head->next;
-            while(position > 1) { //!position-- to reverse a linked list
+            while(position > 1) { //!position-- to reverse a linked list except the 2nd element will get shoved backwards due to if statement
                 previous = current;
                 current = current->next;
                 if (current == nullptr)
@@ -46,24 +49,23 @@ public:
             return;
         }
     }
-    void replace(int position, DataType value) {
+    void replace(DataType value, int position) {
         Node *newNode;
         newNode = head;
-        while(!position--) {
+        while(position > 0) {
             newNode = newNode->next;
             position--;
             if(newNode->next == nullptr)
-                return;
+                break;
         }
-        newNode->peoplePerFloor = value;
-        newNode = nullptr;
+        newNode->people = value;
     }
     //void remove(int position);
     void print() {
         Node *newNode;
         newNode = head;
         while(newNode != nullptr) {
-            std::cout<<newNode->peoplePerFloor<<std::endl;
+            std::cout<<newNode->people<<std::endl;
             newNode = newNode->next;
         }
     }
@@ -111,8 +113,6 @@ public:
         requestedFloor = floorRequest;
         //std::cout<<"Elevator for your trip to floor: "<<floorRequest<<" is coming shortly";
     }
-
-
 };
 
 int main () {
@@ -123,13 +123,20 @@ int main () {
 
     Elevator elevator(floors);
 
-    LinkedList people;
+    LinkedList peoplePerFloor;
 
     for(int i =0; i < floors; i++) {
-        people.insert(i, i);
+        peoplePerFloor.insert(0, i);
     }
 
-    people.print();
+    int floorRequest;
+
+    std::cout<<"which floor do you want to go to?\n";
+    std::cin>>floorRequest;
+
+    peoplePerFloor.replace(averageElevatorPeople, floorRequest-1);
+
+    peoplePerFloor.print();
 
 //    try {
 //        elevator.request(1, 2);
