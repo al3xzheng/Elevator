@@ -1,29 +1,32 @@
-//
+
 // Created by Alex on 2024-01-24.
 
 #include <iostream>
-//incorporate pointers and a linked list, can use a linked list to store the data of the floors visited.
-
-//int whichOneComes ()
-//input a linked list of elevators and with data of current floor and requested floors.
-
-//assume and average of 1.9 people in an elevator per trip.
 
 float averageElevatorPeople = 1.9;
 
 typedef float DataType;
-
+//TODO add a list that tracks the number of times each floor was pressed from the inside and out of the elevator
 //NOW CREATE A LIST with the number of times each floor was pressed.
 
 struct Node {
-    DataType people;
+    DataType data;
     Node* next;
 
-    Node(): people(0), next(nullptr) {};
-    explicit Node(float x): people(x*averageElevatorPeople), next(nullptr) {};
+    Node(): data(0), next(nullptr) {};
+    explicit Node(float x): data(x*averageElevatorPeople), next(nullptr) {};
 };
 
-class LinkedList {
+class FloorsList {
+private:
+    Node *head = nullptr;
+public:
+    void insert (DataType value, int position) {
+
+    }
+};
+
+class PeopleList {
 private:
     Node *head = nullptr;
 public:
@@ -53,19 +56,38 @@ public:
         Node *newNode;
         newNode = head;
         while(position > 0) {
+            if(newNode->next == nullptr)
+                return;
             newNode = newNode->next;
             position--;
-            if(newNode->next == nullptr)
-                break;
         }
-        newNode->people = value;
+        newNode->data = value;
     }
-    //void remove(int position);
+    void remove(int position) {
+        Node *newNode;
+        if(position == 0) {
+            newNode = head->next;
+            delete head;
+            head = newNode;
+            return;
+        }
+        Node *previous;
+        Node *forward;
+        previous = head;
+        forward = head->next->next;
+        while(position > 1) {
+            previous = previous->next;
+            forward = forward->next;
+            position--;
+        }
+        delete previous->next;
+        previous->next = forward;
+    }
     void print() {
         Node *newNode;
         newNode = head;
         while(newNode != nullptr) {
-            std::cout<<newNode->people<<std::endl;
+            std::cout<<newNode->data<<std::endl;
             newNode = newNode->next;
         }
     }
@@ -123,7 +145,7 @@ int main () {
 
     Elevator elevator(floors);
 
-    LinkedList peoplePerFloor;
+    PeopleList peoplePerFloor;
 
     for(int i =0; i < floors; i++) {
         peoplePerFloor.insert(0, i);
@@ -136,18 +158,9 @@ int main () {
 
     peoplePerFloor.replace(averageElevatorPeople, floorRequest-1);
 
+    peoplePerFloor.remove(6);
+
     peoplePerFloor.print();
-
-//    try {
-//        elevator.request(1, 2);
-//    } catch (const std::exception& e) {
-//        std::cerr << e.what() << std::endl;
-//    }
-
-
-
-
-
 
     return 0;
 }

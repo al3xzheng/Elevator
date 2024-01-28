@@ -1,3 +1,10 @@
 # ninja log v5
 3	280	7278489309256800	CMakeFiles/Elevator.dir/elevatorClass.cpp.obj	accccae3ed917d28
 280	386	7278489310272448	Elevator.exe	4dcaca4d5fdba38f
+3	308	7281111216622531	build.ninja	88ff10e7497b65a
+0	242	7281117473442284	CMakeFiles/Elevator.dir/elevatorClass.cpp.obj	accccae3ed917d28
+243	377	7281117474742117	Elevator.exe	4dcaca4d5fdba38f
+4	458	7281117788011885	CMakeFiles/Elevator.dir/elevatorClass.cpp.obj	accccae3ed917d28
+459	662	7281117790033584	Elevator.exe	4dcaca4d5fdba38f
+3	265	7281118041144043	CMakeFiles/Elevator.dir/elevatorClass.cpp.obj	accccae3ed917d28
+266	370	7281118042159987	Elevator.exe	4dcaca4d5fdba38f
