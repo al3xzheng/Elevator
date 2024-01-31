@@ -8,6 +8,7 @@ float averageElevatorPeople = 1.9;
 typedef float DataType;
 typedef int DataType2;
 //TODO add a list that tracks the number of times each floor was pressed from the inside and out of the elevator
+//TODO consider edge cases. track size. remember to delete dynamically allocated memeory in destructor for best practice.
 //NOW CREATE A LIST with the number of times each floor was pressed.
 
 struct Node1 {
@@ -23,13 +24,18 @@ struct Node1 {
 class FloorsList {
 private:
     Node1 *head = nullptr;
+    int floors;
 public:
+    explicit FloorsList(int x) {
+        floors = x;
+    }
     void insert(int value1, int value2, int position) {
         Node1 *newNode;
         newNode = new Node1(value1, value2);
         if(position == 0) {
             newNode->next = head;
             head = newNode;
+            floors++;
             return;
         }
         else {
@@ -58,18 +64,44 @@ public:
         newNode->outside += value1;
         newNode->inside += value2;
     }
+    void remove(int position) {
+        if(position == 0) {
+            Node1 *newNode;
+            newNode = head->next;
+            delete head;
+            head = newNode;
+        }
+        else {
+            Node1 *previous = head;
+            Node1 *current = head->next; //the one you want to delete
+
+            while(position > 0) {
+                if(current == nullptr)
+                    return;
+                previous = current;
+                current = current->next;
+                position--;
+            }
+            previous->next = current->next;
+            delete current;
+            current = nullptr;
+        }
+    }
     void print() {
         int floor = 1;
         Node1 *newNode;
         newNode = head;
         while(newNode != nullptr) {
-            std::cout<<"The number of requests to leave floor "<<floor<<" was: "<< newNode->outside<<std::endl;
+            std::cout<<"The number of requests to enter the elevator from floor  "<<floor<<" was: "<< newNode->outside<<std::endl;
             std::cout<<"The number of requests to go to floor "<<floor<<" from inside the elevator is: "<< newNode->inside<<std::endl;
             newNode = newNode->next;
             floor++;
         }
     }
 };
+//~FloorsList() {
+//    //configure a destructor.
+//}
 
 struct Node {
     DataType data;
@@ -82,7 +114,11 @@ struct Node {
 class PeopleList {
 private:
     Node *head = nullptr;
+    int floors;
 public:
+    explicit PeopleList(int x) {
+        floors = x;
+    }
     void insert(DataType value, int position) { //INSERT NOT REPLACE!
         Node *newNode = new Node(value);
         if(position == 0) {
@@ -195,7 +231,7 @@ public:
             throw std::invalid_argument("floor DNE");
         }
         requestedFloor = floorRequest;
-        //std::cout<<"Elevator for your trip to floor: "<<floorRequest<<" is coming shortly";
+        //std::cout<<"Eleva tor for your trip to floor: "<<floorRequest<<" is coming shortly";
     }
 };
 
@@ -205,10 +241,10 @@ int main () {
     std::cout<<"How many floors does your building have?\n";
     std::cin>>floors;
 
-    Elevator elevator(floors);
+    //int x = NULL;
 
-    PeopleList peoplePerFloor;
-    FloorsList buttonsPressed;
+    PeopleList peoplePerFloor(floors);
+    FloorsList buttonsPressed(floors);
 
     for(int i =0; i < floors; i++) {
         peoplePerFloor.insert(0, i);
